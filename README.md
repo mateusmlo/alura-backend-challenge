@@ -28,7 +28,7 @@
 
 ## Instalação
 
-Este projeto utiliza o Docker para rodar o banco de dados, que utiliza Postgres e pgAdmin 4 para sua administração, portanto certifique-se de tê-lo instalado e configurado em sua máquina. Primeiramente, faça uma cópia ou renomeie o arquivo .env.example para apenas .env e preencha as variáveis destacadas de acordo; elas serão utilizadas no pgAdmin para criar um servidor. Em um terminal, execute (deve levar algum tempo):
+Este projeto utiliza o Docker para rodar o banco de dados (Postgres), portanto certifique-se de tê-lo instalado e configurado em sua máquina. Primeiramente, faça uma cópia ou renomeie o arquivo .env.example para apenas .env e preencha as variáveis destacadas de acordo; elas serão utilizadas no pgAdmin para criar um servidor. Em um terminal, execute (deve levar algum tempo):
 ```bash
 $ docker-compose up -d
 ```
