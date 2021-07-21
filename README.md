@@ -26,13 +26,23 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Instalação
 
+Este projeto utiliza o Docker para rodar o banco de dados (Postgres), portanto certifique-se de tê-lo instalado e configurado em sua máquina. Primeiramente, faça uma cópia ou renomeie o arquivo .env.example para apenas .env e preencha as variáveis destacadas de acordo; elas serão utilizadas no pgAdmin em breve. Em um terminal, execute (deve levar algum tempo):
 ```bash
-$ npm install
+$ docker-compose up -d
 ```
 
-## Running the app
+Tendo o container rodando, acesse localhost:5050 no browser, utilize as credenciais PGADMIN_DEFAULT_EMAIL e PGADMIN_DEFAULT_PASSWORD de .env para logar. No pgAdmin, clique com o botão direito em Servers>Create>Server, e então na aba [General] dê o nome aluraflix, e na aba [Connection] preencha o host com aluraflix, sendo username o valor de POSTGRES_USER e password sendo POSTGRES_PASSWORD, definidos no arquivo .env. Tendo o banco de dados configurado, execute no terminal:
+```bash
+$ npm i
+
+# ou
+
+$ yarn
+```
+
+## Executando o app
 
 ```bash
 # development
@@ -45,18 +55,10 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+## TODO
+[ ] Utilizar Swagger para documentar a API
+[ ] Unit tests
+...🤔
 
 ## Support
 
