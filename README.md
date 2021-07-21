@@ -56,8 +56,9 @@ $ npm run start:prod
 ```
 
 ## TODO
-[ ] Utilizar Swagger para documentar a API
-[ ] Unit tests
+- [ ] Utilizar Swagger para documentar a API
+- [ ] Unit tests
+
 ...🤔
 
 ## Support
