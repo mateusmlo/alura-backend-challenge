@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { GetVideosFilterDto } from './dto/get-videos-filter.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
-import { Video } from './video.entity';
+import { Video } from './entities/video.entity';
 import { VideosRepository } from './videos.repository';
 
 @Injectable()
@@ -13,6 +13,7 @@ export class VideosService {
     private videosRepository: VideosRepository,
   ) {}
 
+  //TODO não está retornando categoryId no resultado
   async getVideos(filterDto: GetVideosFilterDto): Promise<Video[]> {
     return this.videosRepository.getVideos(filterDto);
   }

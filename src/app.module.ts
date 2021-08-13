@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from './config/db.config';
 import { VideosModule } from './videos/videos.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { VideosModule } from './videos/videos.module';
       inject: [ConfigService],
     }),
     VideosModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [],

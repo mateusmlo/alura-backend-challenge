@@ -1,4 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
+import { Category } from 'src/categories/entities/category.entity';
 
 export class CreateVideoDto {
   @IsNotEmpty()
@@ -9,4 +10,7 @@ export class CreateVideoDto {
 
   @IsNotEmpty()
   url: string;
+
+  @IsOptional()
+  category: Category;
 }

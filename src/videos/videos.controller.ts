@@ -12,7 +12,7 @@ import {
 import { CreateVideoDto } from './dto/create-video.dto';
 import { GetVideosFilterDto } from './dto/get-videos-filter.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
-import { Video } from './video.entity';
+import { Video } from './entities/video.entity';
 import { VideosService } from './videos.service';
 
 @Controller('videos')

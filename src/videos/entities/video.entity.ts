@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Category } from 'src/categories/entities/category.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Video {
@@ -13,4 +14,10 @@ export class Video {
 
   @Column({ nullable: false })
   url: string;
+
+  @ManyToOne((type) => Category, (category) => category.videos, {
+    eager: false,
+    nullable: false,
+  })
+  category: Category;
 }
