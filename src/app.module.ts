@@ -4,12 +4,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from './config/db.config';
 import { VideosModule } from './videos/videos.module';
 import { CategoriesModule } from './categories/categories.module';
+import { AuthModule } from './auth/auth.module';
+import { authConfig } from './config/auth.config';
+import { redisConfig } from './config/redis.config';
+import { RedisModule } from 'nestjs-redis';
+import { UserModule } from './user/user.module';
+import { redisAuth } from './config/redis-auth.config';
+import { jwtConstants } from './config/jwt.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [dbConfig],
+      load: [dbConfig, authConfig, redisConfig, redisAuth, jwtConstants],
     }),
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
@@ -26,6 +33,13 @@ import { CategoriesModule } from './categories/categories.module';
     }),
     VideosModule,
     CategoriesModule,
+    AuthModule,
+    RedisModule.forRootAsync({
+      useFactory: (configService: ConfigService) =>
+        configService.get('redisStore'),
+      inject: [ConfigService],
+    }),
+    UserModule,
   ],
   controllers: [],
   providers: [],

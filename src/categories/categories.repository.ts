@@ -11,7 +11,7 @@ import { Category } from './entities/category.entity';
 
 @EntityRepository(Category)
 export class CategoriesRepository extends Repository<Category> {
-  private logger = new Logger('CategoriesRepository', true);
+  private logger = new Logger('CategoriesRepository', { timestamp: true });
 
   async getCategories(filterDto: GetCategoriesFilterDto): Promise<Category[]> {
     const { title, color } = filterDto;

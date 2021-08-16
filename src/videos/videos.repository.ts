@@ -10,7 +10,7 @@ import { Video } from './entities/video.entity';
 
 @EntityRepository(Video)
 export class VideosRepository extends Repository<Video> {
-  private logger = new Logger('VideosRepository', true);
+  private logger = new Logger('VideosRepository', { timestamp: true });
 
   async getVideos(filterDto: GetVideosFilterDto): Promise<Video[]> {
     const { title } = filterDto;
