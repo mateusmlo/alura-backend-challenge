@@ -20,6 +20,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (!user && info instanceof JsonWebTokenError)
       throw new UnauthorizedException('Token inválido.');
 
-    if (err || !user) throw new UnauthorizedException('Token inválido');
+    if (err || !user) throw new UnauthorizedException();
   }
 }
