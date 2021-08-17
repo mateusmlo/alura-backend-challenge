@@ -1,30 +1,26 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
-  Logger,
 } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UsersRepository } from '../user/users.repository';
 
-import { UserService } from 'src/user/user.service';
 import { ConfigService } from '@nestjs/config';
 import { RedisProvider } from './strategies/refresh/redis.provider';
 import { User } from 'src/user/entities/user.entity';
 import ILoginResponse from './interfaces/login-res.interface';
 import ILoginPayload from './interfaces/login-payload.interface';
 import { v4 as uuidV4 } from 'uuid';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
   private readonly refreshTokenRedisExpireTime: number;
   private accessJwtSignOptions: JwtSignOptions;
   private refreshJwtSignOptions: JwtSignOptions;
-  private logger = new Logger();
 
   constructor(
-    @InjectRepository(UsersRepository)
-    private usersRepository: UsersRepository,
+    private userService: UserService,
     private jwtService: JwtService,
     private configService: ConfigService,
     private redisProvider: RedisProvider,
@@ -40,22 +36,33 @@ export class AuthService {
     };
   }
 
-  async getUserByUsernameAndPassword(username: string): Promise<User> {
-    const user = await this.usersRepository.findOne({
-      where: { username },
-    });
+  async getUserByUsernameAndPassword(
+    username: string,
+    password: string,
+  ): Promise<User> {
+    const user = await this.userService.findByUsernameAndPass(
+      username,
+      password,
+    );
+
     return user;
   }
 
   async login(user: User): Promise<ILoginResponse> {
     const payload = { sub: user.id, username: user.username };
     const uuid = this.generateUuidSession();
+
     return {
       access_token: this.signAccess(payload),
       refresh_token: await this.generateRefresh(user, uuid),
       session_id: uuid,
       user_id: user.id,
     } as ILoginResponse;
+  }
+
+  public async logout(uuid: string) {
+    if (uuid === '' || uuid === null) throw new BadRequestException();
+    return await this.redisProvider.deleteKey(uuid);
   }
 
   private signAccess(payload: ILoginPayload): string {

@@ -15,6 +15,7 @@ import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 import { User } from 'src/user/entities/user.entity';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
+import { RequestWithUser } from './interfaces/login-req.interface';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -24,7 +25,7 @@ export class AuthController {
     private userService: UserService,
   ) {}
 
-  @ApiOperation({ summary: 'sign in new user' })
+  @ApiOperation({ summary: 'sign up new user' })
   @ApiBody({
     schema: {
       description: 'register new user',
@@ -41,7 +42,7 @@ export class AuthController {
       },
     },
   })
-  @Post('/registrar')
+  @Post('/register')
   async register(@Body() createUserDto: CreateUserDto): Promise<void> {
     await this.userService.createUser(createUserDto);
   }
@@ -65,8 +66,27 @@ export class AuthController {
     },
   })
   @Post('/login')
-  async login(@Req() req) {
+  async login(@Req() req: RequestWithUser) {
     return await this.authService.login(req.user);
+  }
+
+  @ApiOperation({ summary: 'user logout' })
+  @ApiBody({
+    schema: {
+      description: 'user logout',
+      type: 'object',
+      properties: {
+        uuid: {
+          type: 'string',
+          description: 'user session uuid',
+        },
+      },
+    },
+  })
+  @Post('/logout')
+  async logout(@Body('uuid') uuid: string) {
+    const response = await this.authService.logout(uuid);
+    return { status: response };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -81,7 +101,7 @@ export class AuthController {
   @ApiOperation({ summary: 'refresh user token' })
   @ApiBearerAuth('Authorization')
   @Post('/refresh')
-  refresh(@Req() req) {
+  refresh(@Req() req: RequestWithUser) {
     const user: User = req.user;
     return this.authService.login(user);
   }

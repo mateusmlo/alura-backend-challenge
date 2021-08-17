@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { GetVideosFilterDto } from './dto/get-videos-filter.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
@@ -13,13 +14,23 @@ export class VideosService {
     private videosRepository: VideosRepository,
   ) {}
 
-  //TODO não está retornando categoryId no resultado
-  async getVideos(filterDto: GetVideosFilterDto): Promise<Video[]> {
-    return this.videosRepository.getVideos(filterDto);
+  async getFreeVideos(): Promise<Video[]> {
+    return await this.videosRepository.find({
+      where: {
+        isFree: true,
+      },
+    });
   }
 
   async createVideo(createVideoDto: CreateVideoDto): Promise<Video> {
-    return this.videosRepository.createVideo(createVideoDto);
+    return await this.videosRepository.createVideo(createVideoDto);
+  }
+
+  async paginate(
+    options: IPaginationOptions,
+    filterDto: GetVideosFilterDto,
+  ): Promise<Pagination<Video>> {
+    return await this.videosRepository.paginate(options, filterDto);
   }
 
   async getVideoById(id: string): Promise<Video> {

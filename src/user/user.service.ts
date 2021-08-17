@@ -44,11 +44,11 @@ export class UserService {
     password: string,
   ): Promise<User> {
     const user = await this.findByUsername(username);
-    const passIsValid = await bcrypt.compare(password, user.password);
-    if (passIsValid) {
-      user.password = undefined;
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (isPasswordValid) {
       return user;
     }
-    throw new UnauthorizedException();
+    throw new UnauthorizedException(`Usuário e senha inválidos`);
   }
 }

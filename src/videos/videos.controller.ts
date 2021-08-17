@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Logger,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -16,6 +18,8 @@ import { GetVideosFilterDto } from './dto/get-videos-filter.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
 import { Video } from './entities/video.entity';
 import { VideosService } from './videos.service';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { title } from 'process';
 
 @Controller('videos')
 export class VideosController {
@@ -24,8 +28,17 @@ export class VideosController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getVideos(@Query() filterDto: GetVideosFilterDto): Promise<Video[]> {
-    return this.videosService.getVideos(filterDto);
+  getVideos(
+    @Query('title') filterDto: GetVideosFilterDto,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit = 5,
+  ): Promise<Pagination<Video>> {
+    return this.videosService.paginate({ page, limit }, filterDto);
+  }
+
+  @Get('/free')
+  getFreeVideos(): Promise<Video[]> {
+    return this.videosService.getFreeVideos();
   }
 
   @UseGuards(JwtAuthGuard)

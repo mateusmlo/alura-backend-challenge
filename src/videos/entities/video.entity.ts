@@ -15,6 +15,15 @@ export class Video {
   @Column({ nullable: false })
   url: string;
 
+  @Column({
+    nullable: true,
+    transformer: {
+      to: (value: string) => Boolean(value),
+      from: (value: string) => value,
+    },
+  })
+  isFree: boolean;
+
   @ManyToOne((type) => Category, (category) => category.videos, {
     eager: false,
     nullable: false,
