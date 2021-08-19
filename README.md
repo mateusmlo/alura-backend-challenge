@@ -28,7 +28,7 @@ Projeto feito durante a participação no evento [Alura Challenge #2 - Back-end]
 
 ## Instalação
 
-Este projeto utiliza o Docker para rodar o banco de dados (Postgres), portanto certifique-se de tê-lo instalado e configurado em sua máquina. Primeiramente, faça uma cópia ou renomeie o arquivo .env.example para apenas .env e preencha as variáveis destacadas de acordo; elas serão utilizadas no pgAdmin em breve. Em um terminal, execute (deve levar algum tempo):
+Este projeto utiliza o Docker para rodar o banco de dados (Postgres), portanto certifique-se de tê-lo instalado e configurado em sua máquina. Primeiramente, faça uma cópia ou renomeie o arquivo .env.example para apenas .env e preencha as variáveis destacadas de acordo. Em um terminal, execute (deve levar algum tempo):
 ```bash
 $ docker-compose up -d
 ```
