@@ -3,6 +3,6 @@ export const dbConfig = () => {
     pgUser: process.env.POSTGRES_USER,
     pgPassword: process.env.POSTGRES_PASSWORD,
     db: process.env.POSTGRES_DB,
-    port: process.env.POSTGRES_PORT,
+    pgPort: process.env.POSTGRES_PORT,
   };
 };

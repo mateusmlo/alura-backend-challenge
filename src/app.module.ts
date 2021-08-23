@@ -21,8 +21,7 @@ import { jwtConstants } from './config/jwt.config';
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: 'localhost',
-        port: configService.get<number>('port'),
+        port: configService.get<number>('pgPort'),
         username: configService.get<string>('pgUser'),
         password: configService.get<string>('pgPassword'),
         database: configService.get<string>('db'),
