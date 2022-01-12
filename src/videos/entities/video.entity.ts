@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Category } from 'src/categories/entities/category.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -26,7 +27,16 @@ export class Video {
 
   @ManyToOne((type) => Category, (category) => category.videos, {
     eager: false,
-    nullable: false,
   })
   category: Category;
+
+  constructor(
+    title: string,
+    description: string,
+    url: string,
+    category: Category,
+    isFree?: boolean,
+  ) {
+    Object.assign({}, this);
+  }
 }

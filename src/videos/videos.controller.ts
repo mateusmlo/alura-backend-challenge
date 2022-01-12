@@ -19,13 +19,46 @@ import { UpdateVideoDto } from './dto/update-video.dto';
 import { Video } from './entities/video.entity';
 import { VideosService } from './videos.service';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { title } from 'process';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('videos')
 @Controller('videos')
 export class VideosController {
   private logger = new Logger('VideosController');
   constructor(private videosService: VideosService) {}
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'get videos',
+    parameters: [
+      {
+        schema: { type: 'string' },
+        name: 'title',
+        in: 'query',
+        required: false,
+        example: 'cat video',
+        description: 'search query to filter videos by name',
+      },
+      {
+        schema: { type: 'number' },
+        name: 'page',
+        required: false,
+        in: 'query',
+        example: 1,
+        description:
+          'pagination option, selects page based on limit of returned data',
+      },
+      {
+        schema: { type: 'number' },
+        name: 'limit',
+        in: 'query',
+        required: false,
+        example: 5,
+        description:
+          'pagination option, defines how many objects returned per page',
+      },
+    ],
+  })
   @UseGuards(JwtAuthGuard)
   @Get()
   getVideos(

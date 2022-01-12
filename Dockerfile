@@ -1,11 +1,11 @@
-FROM node:fermium-alpine AS production
+FROM node:lts-alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
-WORKDIR /usr/src/app
+WORKDIR /opt/aluraflix
 
-COPY . /usr/src/app
+COPY . /opt/aluraflix
 
 RUN apk update && \
     apk upgrade && \
@@ -14,19 +14,18 @@ RUN apk update && \
 RUN rm yarn.lock
 RUN yarn global add typescript && yarn global add @nestjs/cli &&  yarn global add ts-node
 RUN yarn add -D @types/node
-RUN rm yarn.lock
 RUN yarn install --production && yarn build
 
 CMD ["node", "/dist/main"]
 
-FROM node:fermium-alpine AS development
+FROM node:lts-alpine AS development
 
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
-WORKDIR /usr/src/app
+WORKDIR /opt/aluraflix
 
-COPY . /usr/src/app
+COPY . /opt/aluraflix
 
 RUN apk update && \
     apk upgrade && \

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Video } from 'src/videos/entities/video.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -14,4 +15,8 @@ export class Category {
 
   @OneToMany((type) => Video, (video) => video.category, { eager: true })
   videos: Video[];
+
+  constructor(title: string, color: string, videos: Video[]) {
+    Object.assign({}, this);
+  }
 }
