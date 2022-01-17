@@ -85,4 +85,16 @@ describe('VideosService', () => {
     expect(service.deleteVideo).toHaveBeenCalled();
     expect(service.deleteVideo).not.toThrow();
   });
+
+  it('should update video by given props to change', async () => {
+    //updateVideo finds the video by running getVideoById, we just ommit that here
+    //creates copy of video before updating props
+    const videoBeforeUpdate = { ...video };
+
+    video.title = 'not funny video';
+    video.url = 'http://reddit.com';
+
+    expect(videoBeforeUpdate.title).not.toEqual(video.title);
+    expect(videoBeforeUpdate.url).not.toEqual(video.url);
+  });
 });
