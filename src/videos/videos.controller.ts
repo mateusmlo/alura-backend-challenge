@@ -4,7 +4,6 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
-  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -22,44 +21,11 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('videos')
+@UseGuards(JwtAuthGuard)
 @Controller('videos')
 export class VideosController {
-  private logger = new Logger('VideosController');
   constructor(private videosService: VideosService) {}
 
-  @ApiBearerAuth()
-  @ApiOperation({
-    summary: 'get videos',
-    parameters: [
-      {
-        schema: { type: 'string' },
-        name: 'title',
-        in: 'query',
-        required: false,
-        example: 'cat video',
-        description: 'search query to filter videos by name',
-      },
-      {
-        schema: { type: 'number' },
-        name: 'page',
-        required: false,
-        in: 'query',
-        example: 1,
-        description:
-          'pagination option, selects page based on limit of returned data',
-      },
-      {
-        schema: { type: 'number' },
-        name: 'limit',
-        in: 'query',
-        required: false,
-        example: 5,
-        description:
-          'pagination option, defines how many objects returned per page',
-      },
-    ],
-  })
-  @UseGuards(JwtAuthGuard)
   @Get()
   getVideos(
     @Query('title') filterDto: GetVideosFilterDto,
@@ -74,25 +40,21 @@ export class VideosController {
     return this.videosService.getFreeVideos();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   createVideo(@Body() createVideoDto: CreateVideoDto): Promise<Video> {
     return this.videosService.createVideo(createVideoDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/:id')
   getVideoById(@Param('id') id: string): Promise<Video> {
     return this.videosService.getVideoById(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   deleteVideo(@Param('id') id: string): Promise<number> {
     return this.videosService.deleteVideo(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch('/:id')
   updateVideo(
     @Param('id') id: string,
